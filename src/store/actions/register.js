@@ -1,4 +1,21 @@
 import * as actionTypes from './actions';
+import communicator from '../../axios';
+
+const createNewUser = (user, pass) => {
+    return {
+        username: user,
+        password: pass,
+    }
+}
+
+export const registerProcess = (user, pass) => {
+    return(dispatch) => {
+        const newAccount = createNewUser(user,pass);
+        dispatch(registerRequest());
+        // Set User Authentication
+
+    }
+}
 
 export const registerRequest = () => {
     return {

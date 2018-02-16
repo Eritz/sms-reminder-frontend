@@ -20,7 +20,6 @@ class Send extends Component {
     }
 
     componentDidMount() {
-        console.log(this.props);
         this.getInputToday();
         this.idHandler();
     }

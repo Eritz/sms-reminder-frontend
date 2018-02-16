@@ -5,6 +5,7 @@ export {
 } from './account';
 
 export {
+    registerProcess,
     registerRequest,
     registerSuccess,
     registerFailure,

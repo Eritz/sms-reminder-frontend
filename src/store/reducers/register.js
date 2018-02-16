@@ -8,12 +8,20 @@ const reducer = (state=initialState, action) => {
     switch (action.type) {
 
         case actionTypes.REGISTER_REQUEST:
-        case actionTypes.REGISTER_SUCCESS:
-        case actionTypes.REGISTER_FAILURE:
+            let registerLoad = action.value;
             return {
                 ...state,
-                isRegistering: action.value,
+                isRegistering: registerLoad,
             }
+
+        case actionTypes.REGISTER_SUCCESS:
+        case actionTypes.REGISTER_FAILURE:
+            let registerStop = action.value;
+            return {
+                ...state,
+                isRegistering: registerStop,
+            }
+
         default:
             return state;
     }
