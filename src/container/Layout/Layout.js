@@ -3,6 +3,7 @@ import {connect} from 'react-redux';
 import {Route, NavLink, Switch, withRouter} from 'react-router-dom';
 
 import Send from './Send/Send';
+import About from './About/About';
 import Register from './Register/Register';
 import Login from './Login/Login';
 
@@ -17,10 +18,13 @@ class Layout extends Component {
                     <nav>
                         <ul>
                             <li><NavLink
-                                to="/notifications/send"
+                                to="/notifications"
                                 exact
                                 >SMS-Reminder</NavLink></li>
-                            <li>About</li>
+                            <li><NavLink
+                                to="/about"
+                                exact
+                                >About</NavLink></li>
                             <li><NavLink
                                 to="/register"
                                 exact
@@ -30,7 +34,8 @@ class Layout extends Component {
                     </nav>
                 </header>
                 <Switch>
-                    <Route path="/notifications/send" component={Send}/>
+                    <Route path="/notifications" component={Send}/>
+                    <Route path="/about" component={About}/>
                     <Route path="/register" component={Register}/>
                     <Route path="/login" component={Login}/>
                 </Switch>

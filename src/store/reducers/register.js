@@ -5,7 +5,7 @@ const initialState = {
 }
 
 const reducer = (state=initialState, action) => {
-    switch (action.types) {
+    switch (action.type) {
 
         case actionTypes.REGISTER_REQUEST:
         case actionTypes.REGISTER_SUCCESS:
