@@ -6,6 +6,9 @@ class Login extends Component {
 
     state = {
         needsToRegister : false,
+        username: "",
+        password: "",
+        readyToSubmit: false,
     }
 
     componentDidMount() {
@@ -14,6 +17,19 @@ class Login extends Component {
 
     goToRegister = () => {
         this.setState({needsToRegister: true});
+    }
+
+    loginUsernameHandler = (event) => {
+        this.setState({username: event.target.value});
+    }
+
+    loginPasswordHandler = (event) => {
+        this.setState({password: event.target.value});
+    }
+
+    checkNotEmptyHandler = () => {
+        let disableButton = (this.state.username !== "") && (this.state.password !== "");
+        this.setState({readyToSubmit:disableButton});
     }
 
     // Fix it up if there is an error in the user database authentication
@@ -33,12 +49,22 @@ class Login extends Component {
                     <section>
                         <p>
                             <label htmlFor="login_name">Username: </label>
-                            <input type="text" name="login_name"/>
+                            <input type="text" 
+                                name="login_name"
+                                value={this.state.username}
+                                onChange={this.loginUsernameHandler}
+                                onKeyUp={this.checkNotEmptyHandler}
+                                required/>
                         </p>
 
                         <p>
                             <label htmlFor="login_password">Password: </label>
-                            <input type="text" name="login_password"/>
+                            <input type="text" 
+                                name="login_password"
+                                value={this.state.password}
+                                onChange={this.loginPasswordHandler}
+                                onKeyUp={this.checkNotEmptyHandler}
+                                required/>
                         </p>
                     </section>
                     <section>
@@ -48,7 +74,7 @@ class Login extends Component {
                     </section>
 
                     <section>
-                        <p><button type="submit">Submit</button></p>
+                        <p><button type="submit" disabled={!this.state.readyToSubmit}>Submit</button></p>
                     </section>
 
                 </form>

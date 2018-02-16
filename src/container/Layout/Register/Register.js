@@ -41,6 +41,8 @@ class Register extends Component {
         this.props.submitRegister(user, pass);
         event.preventDefault();
     }
+    
+    // check if Username is in database handler()
 
     // Fix it up if there is an error in the user database authentication
     render() {

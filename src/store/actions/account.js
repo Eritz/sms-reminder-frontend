@@ -11,3 +11,21 @@ export const accountLogout = () => {
         type: actionTypes.LOGOUT,
     }
 }
+
+export const loginRequest = () => {
+    return {
+        type: actionTypes.LOGIN_REQUEST,
+    }
+}
+
+export const loginSuccess = () => {
+    return {
+        type: actionTypes.LOGIN_SUCCESS,
+    }
+}
+
+export const loginFailure = () => {
+    return {
+        type: actionTypes.LOGIN_FAILURE,
+    }
+}
