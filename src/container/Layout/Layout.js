@@ -29,7 +29,9 @@ class Layout extends Component {
                                 to="/register"
                                 exact
                                 >Register</NavLink></li>
-                            <li>{this.props.loggedInStatus ? "Logout" : <NavLink to="/login" exact>Login</NavLink>}</li> 
+                            <li>{this.props.loggedInStatus ? 
+                                <NavLink to="/logout" exact>Logout</NavLink> :
+                                <NavLink to="/login" exact>Login</NavLink>}</li> 
                         </ul>
                     </nav>
                 </header>
@@ -38,6 +40,7 @@ class Layout extends Component {
                     <Route path="/about" component={About}/>
                     <Route path="/register" component={Register}/>
                     <Route path="/login" component={Login}/>
+                    <Route path="/logout"/>
                 </Switch>
             </div>
         );

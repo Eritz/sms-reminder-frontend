@@ -1,9 +1,24 @@
 import * as actionTypes from './actions';
+import communicator from '../../axios';
 
-export const accountLogin = () => {
+const startAccountLogin = (user, pass) => {
     return {
-        type: actionTypes.LOGIN,
+        username: user,
+        password: pass,
     }
+}
+
+export const accountLogin = (user, pass) => {
+    return (dispatch) => {
+        const userAccount = startAccountLogin(user, pass);
+        dispatch(loginRequest());
+
+        communicator.post('/login', userAccount)
+            .then(response => dispatch(loginSuccess()))
+            .catch(error => dispatch(loginFailure()));
+    }
+
+
 }
 
 export const accountLogout = () => {

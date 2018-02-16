@@ -4,6 +4,7 @@ import * as actionCreator from '../../../store/actions/index';
 import Loader from '../../../component/Loader/Loader';
 
 import {connect} from 'react-redux';
+import { Redirect } from 'react-router-dom';
 
 class Register extends Component {
     
@@ -12,6 +13,7 @@ class Register extends Component {
         password: "",
         verifyPassword: "",
         isReady: false,
+        redirect: false,
     }
 
     componentDidMount() {
@@ -38,14 +40,23 @@ class Register extends Component {
     registerProcessHandler = (event) => {
         let user = this.state.username;
         let pass = this.state.password;
-        this.props.submitRegister(user, pass);
+        this.props.submitRegister(user, pass, this.redirectHandler);
         event.preventDefault();
+    }
+
+    redirectHandler = () => {
+        this.setState({redirect: true});
     }
     
     // check if Username is in database handler()
 
     // Fix it up if there is an error in the user database authentication
     render() {
+
+        if (this.state.redirect) {
+            return <Redirect to='/notifications/send'/>
+        }
+
         return (
             <div className="Register">
                 {this.props.isRegistering ? <Loader/> :
@@ -104,7 +115,7 @@ const mapStateToProps = state => {
 
 const mapDispatchToProps = dispatch => {
     return {
-        submitRegister: (user, pass) => dispatch(actionCreator.registerProcess(user, pass)),
+        submitRegister: (user, pass, cb) => dispatch(actionCreator.registerProcess(user, pass, cb)),
 
     }
 }
