@@ -6,6 +6,7 @@ import Send from './Send/Send';
 import About from './About/About';
 import Register from './Register/Register';
 import Login from './Login/Login';
+import Logout from './Logout/Logout';
 
 import * as actionCreator from '../../store/actions/index';
 import './Layout.css';
@@ -39,8 +40,8 @@ class Layout extends Component {
                     <Route path="/notifications" component={Send}/>
                     <Route path="/about" component={About}/>
                     <Route path="/register" component={Register}/>
+                    <Route path="/logout" component={Logout}/>
                     <Route path="/login" component={Login}/>
-                    <Route path="/logout"/>
                 </Switch>
             </div>
         );
@@ -56,7 +57,6 @@ const mapStateToProps = state => {
 const mapDispatchToProps = dispatch => {
     return {
         loginAccount: () => dispatch(actionCreator.accountLogin()),
-        logoffAccount: () => dispatch(actionCreator.accountLogout()),
     }
 }
 

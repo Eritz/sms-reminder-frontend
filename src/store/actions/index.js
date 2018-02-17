@@ -1,6 +1,6 @@
 export {
     accountLogin,
-    accountLogout,
+    startAccountLogout,
     loginRequest,
     loginSuccess,
     loginFailure,
