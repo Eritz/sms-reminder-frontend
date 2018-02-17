@@ -19,7 +19,10 @@ export const registerProcess = (user, pass, callback) => {
             .then(response => {
                 dispatch(loginRequest())
                 communicator.post('/login', newAccount)
-                    .then(response => dispatch(loginSuccess()))
+                    .then(response => {
+                        console.log(response)
+                        dispatch(loginSuccess(user))
+                    })
                     .catch(error => {
                         dispatch(loginFailure())
                         alert(error)

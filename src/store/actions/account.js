@@ -15,7 +15,7 @@ export const accountLogin = (user, pass, callback) => {
 
         communicator.post('/login', userAccount)
             .then(response => {
-                dispatch(loginSuccess())
+                dispatch(loginSuccess(user))
                 callback();
             })
             .catch(error => dispatch(loginFailure()));
@@ -25,13 +25,13 @@ export const accountLogin = (user, pass, callback) => {
 // We set post body as null to force a bad url
 // with the bad url, we will then make a successful logout change.
 // Then issue a callback to go back to the /login screen.
-export const startAccountLogout = (cb) => {
+export const startAccountLogout = (callback) => {
     return (dispatch) => {
         communicator.post('/logout', null)
             .then()
             .catch(error => {
                 dispatch(accountLogout());
-                cb()
+                callback()
             });
     }
 }
@@ -48,9 +48,10 @@ export const loginRequest = () => {
     }
 }
 
-export const loginSuccess = () => {
+export const loginSuccess = (user) => {
     return {
         type: actionTypes.LOGIN_SUCCESS,
+        value: user,
     }
 }
 

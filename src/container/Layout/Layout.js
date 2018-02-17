@@ -5,6 +5,7 @@ import {Route, NavLink, Switch, withRouter} from 'react-router-dom';
 import Send from './Send/Send';
 import About from './About/About';
 import Register from './Register/Register';
+import MyAccount from './MyAccount/MyAccount';
 import Login from './Login/Login';
 import Logout from './Logout/Logout';
 
@@ -26,10 +27,9 @@ class Layout extends Component {
                                 to="/about"
                                 exact
                                 >About</NavLink></li>
-                            <li><NavLink
-                                to="/register"
-                                exact
-                                >Register</NavLink></li>
+                            <li>{this.props.loggedInStatus ?
+                                <NavLink to={'/users/' + this.props.currentUser + '/notifications'} exact>{this.props.currentUser}</NavLink> :
+                                <NavLink to="/register" exact>Register</NavLink>}</li>
                             <li>{this.props.loggedInStatus ? 
                                 <NavLink to="/logout" exact>Logout</NavLink> :
                                 <NavLink to="/login" exact>Login</NavLink>}</li> 
@@ -42,6 +42,8 @@ class Layout extends Component {
                     <Route path="/register" component={Register}/>
                     <Route path="/logout" component={Logout}/>
                     <Route path="/login" component={Login}/>
+                    {/* <Route path="/users/id/notifications" component={MyAccount}/> */}
+                    <Route path="/users/:username/notifications" component={MyAccount}/>
                 </Switch>
             </div>
         );
@@ -51,6 +53,7 @@ class Layout extends Component {
 const mapStateToProps = state => {
     return {
         loggedInStatus: state.accountRedu.isLoggedIn,
+        currentUser: state.accountRedu.user,
     }
 }
 

@@ -1,0 +1,22 @@
+.MyAccount {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+}
+
+/* Table Styling */
+table {
+    margin-top: 10px;
+    table-layout: fixed;
+    width: 100%;
+    border-collapse: collapse;
+}
+
+th {
+    letter-spacing: 2px;
+}
+
+thead th {
+    border: 2px solid darkblue;
+}
