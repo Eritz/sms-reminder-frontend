@@ -1,5 +1,9 @@
 import React, {Component} from 'react';
 import './Login.css';
+import * as actionCreator from '../../../store/actions/index';
+import Loader from '../../../component/Loader/Loader';
+
+import {connect} from 'react-redux';
 import { Redirect } from 'react-router-dom';
 
 class Login extends Component {
@@ -9,6 +13,7 @@ class Login extends Component {
         username: "",
         password: "",
         readyToSubmit: false,
+        goToMain: false,
     }
 
     componentDidMount() {
@@ -32,6 +37,17 @@ class Login extends Component {
         this.setState({readyToSubmit:disableButton});
     }
 
+    goToMainHandler = () => {
+        this.setState({goToMain: true});
+    }
+
+    submitLoginHandler = (event) => {
+        let user = this.state.username;
+        let pass = this.state.password;
+        this.props.submitLogin(user, pass, this.goToMainHandler);
+        event.preventDefault()
+    }
+
     // Fix it up if there is an error in the user database authentication
     render() {
 
@@ -39,49 +55,67 @@ class Login extends Component {
         if (this.state.needsToRegister) {
             redirect = <Redirect to="/register"/>
         }
+        // Change this later to Main Account
+        if (this.state.goToMain && this.props.isLoggedIn) {
+            redirect = <Redirect to="/notifications/send"/>
+        }
 
         return (
             <div className="Login">
                 {redirect}
-                <form method="post">
-                    <h1>Login</h1>
-                    <p>Since I don't want to use emails for registration. If you lose an account, just quickly register a new username ;)</p>
-                    <section>
-                        <p>
-                            <label htmlFor="login_name">Username: </label>
-                            <input type="text" 
-                                name="login_name"
-                                value={this.state.username}
-                                onChange={this.loginUsernameHandler}
-                                onKeyUp={this.checkNotEmptyHandler}
-                                required/>
-                        </p>
+                {this.props.isLoginPend ? <Loader/> :
+                    <form onSubmit={this.submitLoginHandler}>
+                        <h1>Login</h1>
+                        <p>Since I don't want to use emails for registration. If you lose an account, just quickly register a new username ;)</p>
+                        <section>
+                            <p>
+                                <label htmlFor="login_name">Username: </label>
+                                <input type="text" 
+                                    name="login_name"
+                                    value={this.state.username}
+                                    onChange={this.loginUsernameHandler}
+                                    onKeyUp={this.checkNotEmptyHandler}
+                                    required/>
+                            </p>
 
-                        <p>
-                            <label htmlFor="login_password">Password: </label>
-                            <input type="text" 
-                                name="login_password"
-                                value={this.state.password}
-                                onChange={this.loginPasswordHandler}
-                                onKeyUp={this.checkNotEmptyHandler}
-                                required/>
-                        </p>
-                    </section>
-                    <section>
-                        <p>Don't have an account? Register
-                            <span style={{color: "blue", cursor: "pointer"}} onClick={this.goToRegister}> here</span>.
-                        </p>
-                    </section>
+                            <p>
+                                <label htmlFor="login_password">Password: </label>
+                                <input type="password" 
+                                    name="login_password"
+                                    value={this.state.password}
+                                    onChange={this.loginPasswordHandler}
+                                    onKeyUp={this.checkNotEmptyHandler}
+                                    required/>
+                            </p>
+                        </section>
+                        <section>
+                            <p>Don't have an account? Register
+                                <span style={{color: "blue", cursor: "pointer"}} onClick={this.goToRegister}> here</span>.
+                            </p>
+                        </section>
 
-                    <section>
-                        <p><button type="submit" disabled={!this.state.readyToSubmit}>Submit</button></p>
-                    </section>
+                        <section>
+                            <p><button type="submit" disabled={!this.state.readyToSubmit}>Submit</button></p>
+                        </section>
 
-                </form>
+                    </form>}
             </div>
         );
     }
 
 }
 
-export default Login;
+const mapStateToProps = state => {
+    return {
+        isLoggingIn: state.accountRedu.isLoginPend,
+        isLoggedIn: state.accountRedu.isLoggedIn,
+    }
+}
+
+const mapDispatchToProps = dispatch => {
+    return {
+        submitLogin: (user, pass, cb) => dispatch(actionCreator.accountLogin(user, pass, cb)),
+    }
+}
+
+export default connect(mapStateToProps, mapDispatchToProps)(Login);

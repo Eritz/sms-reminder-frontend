@@ -8,13 +8,16 @@ const startAccountLogin = (user, pass) => {
     }
 }
 
-export const accountLogin = (user, pass) => {
+export const accountLogin = (user, pass, callback) => {
     return (dispatch) => {
         const userAccount = startAccountLogin(user, pass);
         dispatch(loginRequest());
 
         communicator.post('/login', userAccount)
-            .then(response => dispatch(loginSuccess()))
+            .then(response => {
+                dispatch(loginSuccess())
+                callback();
+            })
             .catch(error => dispatch(loginFailure()));
     }
 }
