@@ -1,22 +1,23 @@
 import * as actionTypes from './actions';
-import communicator from '../../axios';
+import communicator from '../../utility/axios';
 
 
-export const packageMessage = (id, phoneNumber, dateMade, dateSend, timeSend, message) => {
+export const packageMessage = (phoneNumber, dateMade, dateSend, timeSend, message, user) => {
     return {
-        id: id,
         dateMade: dateMade,
         dateSend: dateSend,
         timeSend: timeSend,
         phoneNumber: phoneNumber,
         message: message,
-        status: "Pending"
+        status: "Pending",
+        username: user,
     }
 }
 
-export const sendMessage = (id, phoneNumber, dateMade, dateSend, timeSend, message) => {
+export const sendMessage = (phoneNumber, dateMade, dateSend, timeSend, message, user) => {
+    const name = (user==="" ? "GUEST" : user);
     return(dispatch) => {
-        const notification = packageMessage(id,phoneNumber,dateMade,dateSend,timeSend,message);
+        const notification = packageMessage(phoneNumber,dateMade,dateSend,timeSend,message, name);
         dispatch(sendMessagePending());
         communicator.post('/notifications', notification)
             .then(response => dispatch(sendMessageSuccess()))

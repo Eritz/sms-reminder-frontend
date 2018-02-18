@@ -33,8 +33,14 @@ class Register extends Component {
     }
 
     checkSamePasswordHandler = () => {
-        let disableButton =  (this.state.password === this.state.verifyPassword);
+        let disableButton =  (this.state.password === this.state.verifyPassword) 
+                            && (this.props.isNameTaken === false);
         this.setState({isReady: disableButton});
+    }
+
+    checkRegisterNameHandler = () => {
+        let name = this.state.username;
+        this.props.checkAvailable(name);
     }
     
     registerProcessHandler = (event) => {
@@ -57,6 +63,11 @@ class Register extends Component {
             return <Redirect to='/notifications/send'/>
         }
 
+        const notSamePass = (this.state.verifyPassword.length > 0 && this.state.password !== this.state.verifyPassword) ? 
+                        <span className="notSamePass">Password doesn't match</span>: null;
+
+        const isNameTaken = this.props.isNameTaken ? <span className="nameTaken">Name Taken</span> : null;
+        
         return (
             <div className="Register">
                 {this.props.isRegistering ? <Loader/> :
@@ -70,7 +81,11 @@ class Register extends Component {
                                     name="register_name"
                                     value={this.state.username}
                                     onChange={this.registerUsernameHandler}
+                                    onBlur={this.checkRegisterNameHandler}
+                                    minLength="5"
+                                    maxLength="22"
                                     required/>
+                                {isNameTaken}
                             </p>
 
                             <p>
@@ -79,8 +94,10 @@ class Register extends Component {
                                     name="register_password"
                                     value={this.state.password}
                                     onChange={this.registerPasswordHandler}
+                                    minLength="5"
                                     autoComplete="new-password"
                                     required/>
+
                             </p>
 
                             <p>
@@ -92,6 +109,7 @@ class Register extends Component {
                                     onKeyUp={this.checkSamePasswordHandler}
                                     autoComplete="off"
                                     required/>
+                                {notSamePass}
                             </p>
 
                         </section>
@@ -110,13 +128,14 @@ class Register extends Component {
 const mapStateToProps = state => {
     return {
         isRegistering: state.registerRedu.isRegistering,
+        isNameTaken: state.registerRedu.isNameTaken,
     }
 }
 
 const mapDispatchToProps = dispatch => {
     return {
         submitRegister: (user, pass, cb) => dispatch(actionCreator.registerProcess(user, pass, cb)),
-
+        checkAvailable: (user) => dispatch(actionCreator.checkRegisterName(user)),
     }
 }
 

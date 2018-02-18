@@ -1,7 +1,21 @@
 import * as actionTypes from './actions';
-import communicator from '../../axios';
+import communicator from '../../utility/axios';
 
 import {loginRequest, loginSuccess, loginFailure} from './account';
+
+export const checkRegisterName = (info) => {
+    return (dispatch) => {
+        communicator.get('/register/' + info)
+            .then(response => dispatch(changeIsNameTaken(response.data)));
+    }
+}
+
+const changeIsNameTaken = (check) => {
+    return {
+        type: actionTypes.CHECK_REGISTER_USER,
+        value: check,
+    }
+}
 
 const createNewUser = (user, pass) => {
     return {
@@ -34,7 +48,7 @@ export const registerProcess = (user, pass, callback) => {
             })
             .catch(error => {
                 dispatch(registerFailure())
-                alert(error)}
+                alert("error")}
             );
 
     }

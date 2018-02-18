@@ -1,9 +1,9 @@
 import React, {Component} from 'react';
 import './Send.css';
 import * as actionCreator from '../../../store/actions/index';
+import {phoneWithDashes, phoneWoDashes} from '../../../utility/phone';
 
 import {connect} from 'react-redux';
-import uuidv4 from 'uuid';
 
 import Loader from '../../../component/Loader/Loader';
 import Sent from '../../../component/Sent';
@@ -12,7 +12,6 @@ class Send extends Component {
 
     state = {
         currentDay: null,
-        id: "",
         phoneNumber: "",
         dateSend: "",
         timeSend: "",
@@ -21,7 +20,12 @@ class Send extends Component {
 
     componentDidMount() {
         this.getInputToday();
-        this.idHandler();
+    }
+
+    componentWillUnmount() {
+        if (this.props.isSent) {
+            this.isSentHandler();
+        }
     }
     
     getInputToday = () => {
@@ -40,13 +44,13 @@ class Send extends Component {
         this.setState({currentDay: today}); 
     }
 
-    idHandler = () => {
-        let notificationId = uuidv4();
-        this.setState({id: notificationId});
+    phoneNumberHandler = (event) => {
+        let number = phoneWithDashes(event.target.value)
+        this.setState({phoneNumber: number});
     }
 
-    phoneNumberHandler = (event) => {
-        this.setState({phoneNumber: event.target.value});
+    addDashesHandler = (event) => {
+        
     }
 
     dateSendHandler = (event) => {
@@ -62,13 +66,14 @@ class Send extends Component {
     }
 
     submitHandler = (event) => {
-        this.props.submitMessage(this.state.id, this.state.phoneNumber, this.state.currentDay,
-             this.state.dateSend, this.state.timeSend, this.state.message);
+        let submitNumber = phoneWoDashes(this.state.phoneNumber);
+        this.props.submitMessage(submitNumber, this.state.currentDay,
+            this.state.dateSend, this.state.timeSend, this.state.message,
+            this.props.username);
         event.preventDefault();
     }
 
     isSentHandler = () => {
-        this.idHandler();
         this.props.changeIsSent();
     }
 
@@ -88,7 +93,7 @@ class Send extends Component {
                                     value={this.state.phoneNumber}
                                     onChange={this.phoneNumberHandler} 
                                     required
-                                    pattern="[0-9]{3}-[0-9]{3}-[0-9]{4}"/>
+                                    />
                             </p>
                             <p>
                                 <label htmlFor="send_date">What Day: </label>
@@ -96,7 +101,9 @@ class Send extends Component {
                                     name="dateSend"
                                     value={this.state.dateSend}
                                     onChange={this.dateSendHandler} 
-                                    min={this.state.currentDay} required/>
+                                    min={this.state.currentDay}
+                                    max="2100-01-01"
+                                    required/>
                             </p>
                             <p>
                                 <label htmlFor="send_time">What Time: </label>
@@ -130,13 +137,14 @@ const mapStateToProps = state => {
     return {
         isPending: state.sendRedu.isPending,
         isSent: state.sendRedu.isSent,
+        username: state.accountRedu.user,
     }
 }
 
 const mapDispatchToProps = dispatch => {
     return {
-        submitMessage: (id, phoneNumber, dateMade, dateSend, timeSend, message) => 
-                        dispatch(actionCreator.sendMessage(id, phoneNumber, dateMade, dateSend, timeSend, message)),
+        submitMessage: (phoneNumber, dateMade, dateSend, timeSend, message, user) => 
+                        dispatch(actionCreator.sendMessage(phoneNumber, dateMade, dateSend, timeSend, message, user)),
         changeIsSent: () => dispatch(actionCreator.sendMessageScreen()),
     }
 }

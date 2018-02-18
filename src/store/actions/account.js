@@ -1,5 +1,5 @@
 import * as actionTypes from './actions';
-import communicator from '../../axios';
+import communicator from '../../utility/axios';
 
 const startAccountLogin = (user, pass) => {
     return {
@@ -60,3 +60,49 @@ export const loginFailure = () => {
         type: actionTypes.LOGIN_FAILURE,
     }
 }
+
+// User notification Related
+export const getUserNotifications = (username) => {
+    return (dispatch) => {
+        const url = '/users/' + username +'/notifications';
+        if (username==="") {
+            return;
+        }
+        dispatch(pendUserNotifications())    
+        communicator.get(url)
+            .then(response => {
+                dispatch(populateUserNotifications(response.data))
+                dispatch(pendUserNotificationSuccess())
+            })
+            .catch(error => {
+                dispatch(pendUserNotificationFailure())
+                alert(error)
+            });
+    }
+}
+
+export const populateUserNotifications = (list) => {
+    return {
+        type: actionTypes.GET_USER_NOTIFICATIONS,
+        value: list,
+    }
+}
+
+const pendUserNotifications = () => {
+    return {
+        type: actionTypes.PEND_USER_NOTIFICATIONS,
+    }
+}
+
+const pendUserNotificationSuccess = () => {
+    return {
+        type: actionTypes.PEND_USER_NOTIFICATIONS_SUCCESS,
+    }
+}
+
+const pendUserNotificationFailure = () => {
+    return {
+        type: actionTypes.PEND_USER_NOTIFICATIONS_FAILURE,
+    }
+}
+

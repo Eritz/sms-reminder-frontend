@@ -4,10 +4,12 @@ export {
     loginRequest,
     loginSuccess,
     loginFailure,
+    getUserNotifications,
     
 } from './account';
 
 export {
+    checkRegisterName,
     registerProcess,
     registerRequest,
     registerSuccess,

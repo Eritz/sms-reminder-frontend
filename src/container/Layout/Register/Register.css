@@ -3,3 +3,15 @@
     flex-flow: row wrap;
     justify-content: center;
 }
+
+.nameTaken {
+    position: absolute;
+    padding-left: 5px;
+    color: #8b0000;
+}
+
+.notSamePass {
+    position: absolute;
+    padding-left: 5px;
+    color: #8b0000;
+}
