@@ -1,5 +1,6 @@
 import React, {Component} from 'react';
 import './Register.css';
+import {registerInfo, registerUserInfo, registerPassInfo} from './index'
 import * as actionCreator from '../../../store/actions/index';
 import Loader from '../../../component/Loader/Loader';
 
@@ -16,10 +17,6 @@ class Register extends Component {
         redirect: false,
     }
 
-    componentDidMount() {
-        console.log(this.props);
-    }
-
     registerUsernameHandler = (event) => {
         this.setState({username: event.target.value});
     }
@@ -34,17 +31,19 @@ class Register extends Component {
 
     checkSamePasswordHandler = () => {
         let disableButton =  (this.state.password === this.state.verifyPassword) 
-                            && (this.props.isNameTaken === false);
+                            && (this.props.isNameTaken === false) && (this.state.password.length >= 5);
         this.setState({isReady: disableButton});
     }
 
     checkRegisterNameHandler = () => {
         let name = this.state.username;
+        name = name.trim();
         this.props.checkAvailable(name);
     }
     
     registerProcessHandler = (event) => {
         let user = this.state.username;
+        user = user.trim();
         let pass = this.state.password;
         this.props.submitRegister(user, pass, this.redirectHandler);
         event.preventDefault();
@@ -54,14 +53,14 @@ class Register extends Component {
         this.setState({redirect: true});
     }
     
-    // check if Username is in database handler()
-
-    // Fix it up if there is an error in the user database authentication
     render() {
 
         if (this.state.redirect) {
             return <Redirect to='/notifications/send'/>
         }
+
+        const lessThanFive = (this.state.password.length >= 1 && this.state.password.length < 5) ?
+                        <span className="lessThanFive">Password is less than 5 char</span> : null;
 
         const notSamePass = (this.state.verifyPassword.length > 0 && this.state.password !== this.state.verifyPassword) ? 
                         <span className="notSamePass">Password doesn't match</span>: null;
@@ -73,7 +72,11 @@ class Register extends Component {
                 {this.props.isRegistering ? <Loader/> :
                     <form onSubmit={this.registerProcessHandler}>
                         <h1>Registration Form</h1>
-                        <p>Register to keep track of sent notifications</p>
+                        <div className="RegisterInfo">
+                            <p>{registerInfo}</p>
+                            <p>{registerUserInfo}<br/>No white spaces allowed.</p>
+                            <p>{registerPassInfo}</p>
+                        </div>
                         <section>
                             <p>
                                 <label htmlFor="register_name">Username: </label>
@@ -82,6 +85,7 @@ class Register extends Component {
                                     value={this.state.username}
                                     onChange={this.registerUsernameHandler}
                                     onBlur={this.checkRegisterNameHandler}
+                                    pattern="^(?=.*?[a-zA-Z]).{5,22}$"
                                     minLength="5"
                                     maxLength="22"
                                     required/>
@@ -97,7 +101,7 @@ class Register extends Component {
                                     minLength="5"
                                     autoComplete="new-password"
                                     required/>
-
+                                {lessThanFive}
                             </p>
 
                             <p>

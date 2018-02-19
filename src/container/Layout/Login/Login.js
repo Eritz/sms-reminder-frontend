@@ -16,10 +16,6 @@ class Login extends Component {
         goToMain: false,
     }
 
-    componentDidMount() {
-        console.log(this.props);
-    }
-
     goToRegister = () => {
         this.setState({needsToRegister: true});
     }
@@ -48,14 +44,13 @@ class Login extends Component {
         event.preventDefault()
     }
 
-    // Fix it up if there is an error in the user database authentication
     render() {
 
         let redirect = null;
         if (this.state.needsToRegister) {
             redirect = <Redirect to="/register"/>
         }
-        // Change this later to Main Account
+        
         if (this.state.goToMain && this.props.isLoggedIn) {
             redirect = <Redirect to="/notifications/send"/>
         }
@@ -66,7 +61,7 @@ class Login extends Component {
                 {this.props.isLoginPend ? <Loader/> :
                     <form onSubmit={this.submitLoginHandler}>
                         <h1>Login</h1>
-                        <p>Since I don't want to use emails for registration. If you lose an account, just quickly register a new username ;)</p>
+                        <p className="LoginInfo">Since I don't want to use emails for registration, if you lose an account, just quickly register a new username ;)</p>
                         <section>
                             <p>
                                 <label htmlFor="login_name">Username: </label>
@@ -89,15 +84,14 @@ class Login extends Component {
                             </p>
                         </section>
                         <section>
-                            <p>Don't have an account? Register
-                                <span style={{color: "blue", cursor: "pointer"}} onClick={this.goToRegister}> here</span>.
-                            </p>
-                        </section>
-
-                        <section>
                             <p><button type="submit" disabled={!this.state.readyToSubmit}>Submit</button></p>
                         </section>
 
+                        <section>
+                            <p style={{fontSize: "0.5em"}}>Don't have an account? Register
+                                <span style={{color: "blue", cursor: "pointer"}} onClick={this.goToRegister}> here</span>.
+                            </p>
+                        </section>
                     </form>}
             </div>
         );

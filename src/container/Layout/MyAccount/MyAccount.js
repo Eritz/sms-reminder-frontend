@@ -8,14 +8,13 @@ import {connect} from 'react-redux';
 class MyAccount extends Component {
 
     componentDidMount() {
-        console.log(this.props);
         this.props.getUserNotifications(this.props.username);
     }
 
     render() {
 
         const allNotifications = this.props.notificationList.map(ele => {
-            const phone = "+1-" + phoneWithDashes(ele.phoneNumber);
+            const phone = phoneWithDashes(ele.phoneNumber);
             return(
                 <tr key={ele.id}>
                     <th>{ele.dateMade}</th>
@@ -32,7 +31,7 @@ class MyAccount extends Component {
             <div className="MyAccount">
                 {this.props.notificationPend ? <Loader/> :
                     <div>
-                    <h1>All your notifications</h1>
+                    <h1>All Your Notifications {"("+this.props.notificationList.length+")"}</h1>
                         <table className="MyAccount-notification">
                             <thead>
                                 <tr>
@@ -47,6 +46,7 @@ class MyAccount extends Component {
                             <tbody>
                                 {allNotifications}
                             </tbody>
+                            <div></div>
                         </table>
                     </div>}
                 </div>

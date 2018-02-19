@@ -1,13 +1,19 @@
 .MyAccount {
+    font-size: 1.5em;
     display: flex;
     flex-direction: column;
     justify-content: center;
     align-items: center;
+    overflow-y: auto;
+}
+
+.MyAccount h1 {
+    text-align: center;
 }
 
 /* Table Styling */
 table {
-    margin-top: 10px;
+    margin-top: 30px;
     table-layout: fixed;
     width: 100%;
     border-collapse: collapse;
@@ -18,5 +24,27 @@ th {
 }
 
 thead th {
-    border: 2px solid darkblue;
+    font-size: 30px;
+    color: rgb(52, 97, 233);
+    font-weight: bolder;
+    line-height: 1.4;
+    border-bottom: 2px solid #acacac;
+    padding-bottom: 10px;
+}
+
+tbody th{
+    padding: 12px;
+    width: 5px;
+    font-size: 27px;
+    line-height: 1.4;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    border-bottom: 1px solid #8a8a8a;
+    padding-bottom: 20px;
+}
+
+tbody th:hover {
+    background-color: rgba(212, 212, 212, 0.253);
+    cursor: pointer;
 }

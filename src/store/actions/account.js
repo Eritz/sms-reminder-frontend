@@ -1,6 +1,7 @@
 import * as actionTypes from './actions';
 import communicator from '../../utility/axios';
 
+// Login related
 const startAccountLogin = (user, pass) => {
     return {
         username: user,
@@ -18,27 +19,14 @@ export const accountLogin = (user, pass, callback) => {
                 dispatch(loginSuccess(user))
                 callback();
             })
-            .catch(error => dispatch(loginFailure()));
-    }
-}
-
-// We set post body as null to force a bad url
-// with the bad url, we will then make a successful logout change.
-// Then issue a callback to go back to the /login screen.
-export const startAccountLogout = (callback) => {
-    return (dispatch) => {
-        communicator.post('/logout', null)
-            .then()
             .catch(error => {
-                dispatch(accountLogout());
-                callback()
+                if (error.response.data.status===401) {
+                    alert("Wrong account information.");
+                } else {
+                    alert(error);
+                }
+                dispatch(loginFailure())
             });
-    }
-}
-
-export const accountLogout = () => {
-    return {
-        type: actionTypes.LOGOUT,
     }
 }
 
@@ -60,6 +48,29 @@ export const loginFailure = () => {
         type: actionTypes.LOGIN_FAILURE,
     }
 }
+
+// Logout related
+
+// We set post body as null to force a bad url
+// with the bad url, we will then make a successful logout change.
+// Then issue a callback to go back to the /login screen.
+export const startAccountLogout = (callback) => {
+    return (dispatch) => {
+        communicator.post('/logout', null)
+            .then()
+            .catch(error => {
+                dispatch(accountLogout());
+                callback()
+            });
+    }
+}
+
+export const accountLogout = () => {
+    return {
+        type: actionTypes.LOGOUT,
+    }
+}
+
 
 // User notification Related
 export const getUserNotifications = (username) => {

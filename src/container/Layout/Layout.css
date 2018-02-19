@@ -1,3 +1,25 @@
+@import url('https://fonts.googleapis.com/css?family=Lora|Open+Sans');
+
+.Layout {
+    font-family: 'Lora', sans-serif;
+}
+
+.Container {
+    font-family: 'Open Sans', sans-serif;    
+}
+
+.Layout header {
+    background-color: rgb(77, 94, 102);
+    width: 100%;
+    border-bottom: 1px solid transparent;
+}
+
+.Layout h1 {
+    border-bottom: 0.5px solid black;
+    margin-bottom: 10px;
+}
+
+/* Navigation Links related */
 .Layout ul {
     list-style: none;
     margin: 0;
@@ -7,6 +29,46 @@
 }
 
 .Layout li {
+    font-size: 2em;
     display: inline-block;
     margin: 30px;
+}
+
+.Layout li:first-child{
+    float: left;
+}
+
+.Layout a {
+    text-decoration: none;
+    color: white;
+}
+
+.Layout a:active,
+.Layout a.active {
+    color: rgba(145, 235, 255, 0.979);
+}
+
+.Layout a:hover:not(.active) {
+    color: rgb(238, 166, 161);
+    transition: color 0.3s ease-in;
+}
+
+/* Submit Button */
+p button {
+    background-color: rgb(77, 94, 102);
+    border-style: outset;
+    border-color: rgba(77, 94, 102, 0.137);
+    padding: 15px;
+    margin-top: 10px;
+    margin-left: 15px;
+    width: 100%;
+    color: white;
+    font-weight: bold;
+    cursor: pointer; 
+    transition: all 1s ease;
+}
+
+p button:disabled {
+    background-color: rgba(77, 94, 102, 0.137);
+    cursor: default;
 }

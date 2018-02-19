@@ -19,7 +19,7 @@ class Layout extends Component {
                 <header>
                     <nav>
                         <ul>
-                            <li><NavLink
+                            <li className="Layout-title"><NavLink
                                 to="/notifications"
                                 exact
                                 >SMS-Reminder</NavLink></li>
@@ -36,15 +36,18 @@ class Layout extends Component {
                         </ul>
                     </nav>
                 </header>
-                <Switch>
-                    <Route path="/notifications" component={Send}/>
-                    <Route path="/about" component={About}/>
-                    <Route path="/register" component={Register}/>
-                    <Route path="/logout" component={Logout}/>
-                    <Route path="/login" component={Login}/>
-                    {/* <Route path="/users/id/notifications" component={MyAccount}/> */}
-                    <Route path="/users/:username/notifications" component={MyAccount}/>
-                </Switch>
+                <div className="Container">
+                    <Switch>
+                        <Route exact path= "/" component={Send}/>
+                        <Route path="/notifications" component={Send}/>
+                        <Route path="/about" component={About}/>
+                        <Route path="/register" component={Register}/>
+                        <Route path="/logout" component={Logout}/>
+                        <Route path="/login" component={Login}/>
+                        <Route path="/users/:username/notifications" component={MyAccount}/>
+                        <Route render={() => <h1>Not found</h1>} />
+                    </Switch>
+                </div>
             </div>
         );
     }

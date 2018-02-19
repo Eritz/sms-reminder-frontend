@@ -1,3 +1,4 @@
+// Example of format: 123-456-7890
 export const phoneWithDashes = (input) => {
     let phone = input.replace(/\D/g,'');
     phone = phone.substring(0,10);
@@ -11,7 +12,6 @@ export const phoneWithDashes = (input) => {
     }
     return phone; 
 }
-// 123-456-7890
 
 export const phoneWoDashes = (input) => {
     input = input.replace(/-/g, "");

@@ -3,6 +3,7 @@ import communicator from '../../utility/axios';
 
 import {loginRequest, loginSuccess, loginFailure} from './account';
 
+// Check if the name is available during registration
 export const checkRegisterName = (info) => {
     return (dispatch) => {
         communicator.get('/register/' + info)
@@ -17,6 +18,7 @@ const changeIsNameTaken = (check) => {
     }
 }
 
+// Finalizing registration related
 const createNewUser = (user, pass) => {
     return {
         username: user,

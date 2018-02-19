@@ -8,9 +8,21 @@ class About extends Component {
                 <div>
                     <h1>What is this?</h1>
                     <p>
-                        This web app will send free SMS reminders using Twilio's API. Registration is not required <br/>
-                        but registering will allow tracking all sent notifications. Standard SMS fees and pricing <br/>
-                        related information applies when using this service. 
+                        This web app will send free SMS reminders to United States carriers using Twilio's API. Registration is not required <br/>
+                        but registering will allow tracking all sent notifications. Messages are sent via a Twilio trial account.
+                        <br/>Standard SMS fees and pricing related information applies when using this service.<br/>
+                        <br/>The back end code can 
+                        be found <a
+                            target="_blank"
+                            rel="noopener noreferrer" 
+                            href="https://github.com/Eritz/sms-spring-boot-reminder" 
+                            style={{cursor: "pointer", color: "blue"}}>here</a>.
+                        <br/>The front end code can
+                        be found <a
+                            target="_blank"
+                            rel="noopener noreferrer"
+                            href="https://github.com/Eritz/sms-reminder-frontend"
+                            style={{cursor:"pointer", color: "blue"}}>here.</a>
                     </p>
                 </div>
             </div>

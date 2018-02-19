@@ -16,6 +16,7 @@ class Send extends Component {
         dateSend: "",
         timeSend: "",
         message: "",
+        isReady: false,
     }
 
     componentDidMount() {
@@ -26,6 +27,7 @@ class Send extends Component {
         if (this.props.isSent) {
             this.isSentHandler();
         }
+        this.setState({isReady: false});        
     }
     
     getInputToday = () => {
@@ -44,21 +46,26 @@ class Send extends Component {
         this.setState({currentDay: today}); 
     }
 
+    isReadyHandler = () => {
+        let readyToSend = (this.state.phoneNumber.length === 12 && this.state.dateSend !== "" && 
+                            this.state.timeSend !== "" && this.state.message !== "");
+        console.log(this.state.phoneNumber);
+        this.setState({isReady: readyToSend});
+    }
+
     phoneNumberHandler = (event) => {
         let number = phoneWithDashes(event.target.value)
         this.setState({phoneNumber: number});
     }
 
-    addDashesHandler = (event) => {
-        
-    }
-
     dateSendHandler = (event) => {
         this.setState({dateSend: event.target.value});
+        this.isReadyHandler();
     }
 
     timeSendHandler = (event) => {
         this.setState({timeSend: event.target.value});
+        this.isReadyHandler();
     }
 
     messageHandler = (event) => {
@@ -74,11 +81,20 @@ class Send extends Component {
     }
 
     isSentHandler = () => {
+        const empty = "";
+        const notReady = false;
         this.props.changeIsSent();
+        this.setState({
+            isReady: notReady,
+            phoneNumber: empty,
+            dateSend: empty,
+            timeSend: empty,
+            message: empty,
+        });
+        this.getInputToday();
     }
 
     render() {
-
         return (
             <div className="Send">
                 {this.props.isPending ? <Loader/> :  this.props.isSent ? <Sent goBack={this.isSentHandler}/> : 
@@ -91,7 +107,8 @@ class Send extends Component {
                                     name="phoneNumber" 
                                     placeholder="211-245-8871"
                                     value={this.state.phoneNumber}
-                                    onChange={this.phoneNumberHandler} 
+                                    onChange={this.phoneNumberHandler}
+                                    onBlur={this.isReadyHandler} 
                                     required
                                     />
                             </p>
@@ -102,7 +119,7 @@ class Send extends Component {
                                     value={this.state.dateSend}
                                     onChange={this.dateSendHandler} 
                                     min={this.state.currentDay}
-                                    max="2100-01-01"
+                                    max="2223-01-01"
                                     required/>
                             </p>
                             <p>
@@ -114,17 +131,22 @@ class Send extends Component {
                             </p>
                             <p>
                                 <label htmlFor="message">Message: </label>
-                                <input type="text" 
+                                <textarea
+                                    rows="10" 
+                                    cols="50" 
                                     className="SendMessage" 
                                     name="message"
                                     value={this.state.message}
-                                    onChange={this.messageHandler} 
-                                    placeholder="Enter your message here..." required/>
+                                    onChange={this.messageHandler}
+                                    onKeyDown={this.isReadyHandler} 
+                                    placeholder="Enter your message here..."
+                                    maxLength="16000" required/>
+                                <span className="MessageCount">({this.state.message.length}/16000)</span>
                             </p>
                         </section>
 
                         <section>
-                            <p><button type="submit">Send out</button></p>
+                            <p><button type="submit" disabled={!this.state.isReady}>Submit</button></p>
                         </section>
                     </form>}
             </div>
